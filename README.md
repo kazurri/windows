@@ -5,128 +5,135 @@ my windows setting
 
 ## Version
 
-* Windows 10 Enterprise 1909
+* Windows 10 Enterprise 20H2
 
 ## Installation
 
 ### scoop
 
-* Install
+* scoopのインストール
 
-```ps1
-> Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-> Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+iwr -useb get.scoop.sh | iex
 ```
 
-* Toolのインストール
+* ツールのインストール
 
-```ps1
-> scoop install sudo
-> sudo scoop install 7zip git --global
-> scoop install aria2 bat curl fd gawk less ghq ripgrep sed
-> scoop install uutils-coreutils
-> scoop install nodejs-tls python ruby
+```powershell
+scoop install sudo
+sudo scoop install 7zip git --global
+scoop install aria2 curl
+scoop install gitui bat less which fd ripgrep fzf gawk sed ghq
+scoop install uutils-coreutils
+scoop install python nodejs-lts
 ```
 
 * Update & Cleanup
 
-```ps1
-> scoop update
-> scoop update *
-> scoop cleanup *
+```powershell
+scoop update
+scoop update *
+scoop cleanup *
+scoop cache rm *
 ```
 
-### rust
+## ruby
 
-* exaをbuildするためにrustをインストール
-* exaが今後Windowsサポートした場合はscoopでインストールする
-* Visual Studio Build Tools 2019のインストール
-  * [リンク](https://visualstudio.microsoft.com/ja/downloads/)
-  * ワークロード：C++ Build Tools
-  * 言語パック：日本語、英語
-* rustのインストール
-  * [リンク](https://www.rust-lang.org/tools/install)
+* rubyのインストール
 
-```ps1
-> cargo install --git https://github.com/skyline75489/exa --branch chesterliu/dev/win-support
+```powershell
+scoop install ruby
 ```
 
-### Windows Terminal
+* msys2/ridkのインストール
 
-* Microsoft Storeからインストール
-
-### Powershell
-
-* PowerShell Coreのインストール
-  * [リンク](https://github.com/PowerShell/PowerShell)
-
-* モジュールのインストール
-
-```ps1
-Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
+```powershell
+scoop install msys2
+ridk install
 ```
 
-* プロファイルの編集
-
-```ps1
-> notepad $profile
-```
-
-* 記載内容
-
-```ps1
-# General
-$PSReadlineOptions = @{
-  BellStyle = "None"
-  HistoryNoDuplicates = $true
-  HistorySearchCursorMovesToEnd = $true
-}
-Set-PSReadLineOption @PSReadLineOptions
-
-# Alias
-## exa
-If (Test-Path Alias:ls) { Remove-Item Alias:ls }
-function ls() { exa --icons $args }
-function ll() { exa -lh --icons --git $args}
-function lt() { exa -lh --icons --sort modified --git $args }
-## bat
-If (Test-Path Alias:cat) { Remove-Item Alias:cat }
-function cat() { $input | bat -p --paging never $args }
-function less() { $input | bat $args }
-## ripgrep
-Set-Alias grep rg
-## uutils
-function mkdir() { uutils mkdir $args }
-If (Test-Path Alias:cp) { Remove-Item Alias:cp }
-function cp() { uutils cp $args }
-If (Test-Path Alias:mv) { Remove-Item Alias:mv }
-function mv() { uutils mv $args }
-If (Test-Path Alias:rm) { Remove-Item Alias:rm }
-function rm() { uutils rm $args }
 ## ghq
-function g() { cd (ghq list -p (ghq list | fzf )) }
-## neovim
-Set-Alias vi nvim
-```
 
-### msys2
+* ghq rootの設定
 
-```ps1
-> scoop install msys2
-> ridk install
+```powershell
+git config --global <ghq root>
 ```
 
 ### neovim
 
-```ps1
-> scoop bucket add versions
-> scoop install neovim-nightly
-> pip install neovim
-> gem install neovim
-> npm install -g neovim
+* neovimのインストール
+
+```powershell
+scoop bucket add versions
+scoop install neovim
 ```
 
-## Font
+* モジュールのインストール
+
+```powershell
+pip install neovim
+gem install neovim
+npm install -g neovim
+```
+
+* 環境変数の設定
+  * XDG_CACHE_HOME → %USERPROFILE%\.cache
+  * XDG_CONFIG_HOME → %USERPROFILE%\.config
+
+* 設定ファイルのコピー
+
+```powershell
+ghq get kazurri/dotfiles
+cp "$(ghq list -p dotfiles)\.config\nvim" $HOME\.config\ -Recurse -Force
+```
+
+### Powershell Core
+
+* PowerShell Coreのインストール
+
+```powershell
+scoop install pwsh
+```
+
+* モジュールのインストール
+
+```powershell
+Install-Module posh-git -Scope CurrentUser -Force
+Install-Module PSReadLine -Scope CurrentUser -SkipPublisherCheck -Force
+Install-Module PSFzf -Scope CurrentUser -SkipPublisherCheck -Force
+Install-Module ZLocation -Scope CurrentUser -Force
+```
+
+* プロファイルのコピー
+
+```powershell
+ghq get kazurri/windows
+$path = $env:USERPROFILE + "\Documents\PowerShell"
+If (-not (Test-Path $path)) { mkdir $path}
+cp "$(ghq list -p windows)\Microsoft.PowerShell_profile.ps1" $PROFILE -Force
+```
+
+### Windows Terminal
+
+* Windows Terminalのインストール
+
+```powershell
+scoop bucket add extras
+scoop install windows-terminal
+```
+
+* プロファイルのコピー
+
+```powershell
+ghq get kazurri/windows
+$path = $env:LOCALAPPDATA + "\Microsoft\Windows Terminal"
+If (-not (Test-Path $path)) { mkdir $path}
+cp "$(ghq list -p windows)\settings.json" $path\ -Force
+```
+
+### Font
 
 * [HackGen](https://github.com/yuru7/HackGen)
 
