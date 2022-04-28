@@ -1,7 +1,3 @@
-# module
-Import-Module posh-git
-Import-Module ZLocation
-
 # general
 $parameters = @{
   BellStyle = "None"
@@ -65,8 +61,6 @@ ForEach-Object {
 
 # keybind
 Set-PSReadLineKeyHandler -key Tab -Function MenuComplete
-Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -ScriptBlock { gf; [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine() }
-Set-PSReadLineKeyHandler -Chord 'Ctrl+;' -ScriptBlock { Invoke-FuzzyZLocation; [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine() }
 
 # starship
 Invoke-Expression (&starship init powershell)

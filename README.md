@@ -21,8 +21,7 @@ iwr -useb get.scoop.sh | iex
 * ツールのインストール
 
 ```powershell
-scoop install sudo
-sudo scoop install 7zip git --global
+scoop install 7zip git
 scoop install aria2 curl
 scoop install gitui bat less which fd ripgrep fzf gawk sed ghq
 scoop install uutils-coreutils
@@ -100,10 +99,8 @@ scoop install pwsh
 * モジュールのインストール
 
 ```powershell
-Install-Module posh-git -Scope CurrentUser -Force
 Install-Module PSReadLine -Scope CurrentUser -SkipPublisherCheck -Force
 Install-Module PSFzf -Scope CurrentUser -SkipPublisherCheck -Force
-Install-Module ZLocation -Scope CurrentUser -Force
 ```
 
 * プロファイルのコピー
