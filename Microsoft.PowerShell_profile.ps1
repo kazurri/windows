@@ -10,9 +10,8 @@ Set-PSReadLineOption @parameters
 # bat
 $env:BAT_PAGER = "less -RF"
 $env:BAT_STYLE = "header,numbers"
-$env:BAT_THEME = "OneHalfDark"
-If (Test-Path Alias:cat) { Remove-Item Alias:cat }
-function cat { $input | bat --paging never $args }
+$env:BAT_THEME = "Monokai Extended Origin"
+Set-Alias less bat
 
 # lsd
 Set-Alias ls lsd

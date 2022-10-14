@@ -21,11 +21,23 @@ iwr -useb get.scoop.sh | iex
 * ツールのインストール
 
 ```powershell
-scoop install 7zip git
-scoop install aria2 curl
-scoop install gitui bat less which fd ripgrep fzf gawk sed ghq
-scoop install uutils-coreutils
+# must
+scoop install 7zip aria2 curl
+# powershell
+scoop install pwsh
+# git
+scoop install git gitui ghq
+# fzf
+scoop install fzf
+# legacy tools
+scoop install gawk less sed which
+# rust tools
+scoop install bat bat delta fd lsd ripgrep starship uutils-coreutils
+# language
 scoop install python nodejs-lts
+# extras
+scoop bucket add extras
+scoop install pdfarranger powertoys putty quicklook vcredist2022 vcxsrv windows-terminal
 ```
 
 * Update & Cleanup
