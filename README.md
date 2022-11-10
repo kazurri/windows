@@ -5,7 +5,7 @@ my windows setting
 
 ## Version
 
-* Windows 10 Enterprise 20H2
+* Windows 10 Enterprise 21H2
 
 ## Installation
 
@@ -23,8 +23,6 @@ iwr -useb get.scoop.sh | iex
 ```powershell
 # must
 scoop install 7zip aria2 curl
-# powershell
-scoop install pwsh
 # git
 scoop install git gitui ghq
 # fzf
@@ -33,11 +31,13 @@ scoop install fzf
 scoop install gawk less sed which
 # rust tools
 scoop install bat bat delta fd lsd ripgrep starship uutils-coreutils
-# language
+# programing
 scoop install python nodejs-lts
 # extras
 scoop bucket add extras
-scoop install pdfarranger powertoys putty quicklook vcredist2022 vcxsrv windows-terminal
+scoop install vcredist2022 windows-terminal
+scoop install putty teraterm vcxsrv
+scoop install pdfarranger rufus sysinternals winmerge winscp wireshark
 ```
 
 * Update & Cleanup
@@ -103,10 +103,7 @@ cp "$(ghq list -p dotfiles)\.config\nvim" $HOME\.config\ -Recurse -Force
 ### Powershell Core
 
 * PowerShell Coreのインストール
-
-```powershell
-scoop install pwsh
-```
+  * [PowerShell](https://github.com/PowerShell/PowerShell)
 
 * モジュールのインストール
 
@@ -130,7 +127,7 @@ cp "$(ghq list -p windows)\Microsoft.PowerShell_profile.ps1" $PROFILE -Force
 
 ```powershell
 scoop bucket add extras
-scoop install windows-terminal
+scoop install vcredist2022 windows-terminal
 ```
 
 * プロファイルのコピー
