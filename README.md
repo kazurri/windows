@@ -32,7 +32,7 @@ scoop install gawk less sed which
 # rust tools
 scoop install bat bat delta fd lsd ripgrep starship uutils-coreutils
 # programing
-scoop install python nodejs-lts
+scoop install python
 # extras
 scoop bucket add extras
 scoop install vcredist2022 windows-terminal
@@ -47,21 +47,6 @@ scoop update
 scoop update *
 scoop cleanup *
 scoop cache rm *
-```
-
-## ruby
-
-* rubyのインストール
-
-```powershell
-scoop install ruby
-```
-
-* msys2/ridkのインストール
-
-```powershell
-scoop install msys2
-ridk install
 ```
 
 ## ghq
@@ -84,9 +69,7 @@ scoop install neovim
 * モジュールのインストール
 
 ```powershell
-pip install neovim
-gem install neovim
-npm install -g neovim
+pip install --user pynvim
 ```
 
 * 環境変数の設定

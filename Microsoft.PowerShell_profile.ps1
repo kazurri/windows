@@ -27,13 +27,13 @@ Set-Alias grep rg
 $env:FZF_ALT_C_COMMAND = "fd -HL -t d -E '.git/'"
 $env:FZF_CTRL_T_COMMAND = "fd -HL -t f -E '.git/*'"
 $env:FZF_DEFAULT_COMMAND = "fd -HL -t f -E '.git/*'"
-$env:FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --inline-info --border --color=dark --color=fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:#4b5263,hl+:#d858fe --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef"
+$env:FZF_DEFAULT_OPTS = "--height 50% --layout=reverse --no-unicode --info=inline"
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 # ghq
 function gf {
-  $path = ghq list | fzf
-  If ($LastExitCode -eq 0) { cd "$(ghq root)\$path" }
+  $path = $(ghq list | fzf)
+  If ($LastExitCode -eq 0) { Set-Location "$(ghq root)\$path" }
 }
 
 # neovim
