@@ -1,4 +1,7 @@
 # general
+[System.Console]::InputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
+[System.Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
+
 $parameters = @{
   BellStyle = "None"
   EditMode = "Emacs"
@@ -7,59 +10,38 @@ $parameters = @{
 }
 Set-PSReadLineOption @parameters
 
-# bat
-$env:BAT_PAGER = "less -RF"
-$env:BAT_STYLE = "header,numbers"
-$env:BAT_THEME = "Monokai Extended Origin"
+# alias
+## exa
+If (Test-Path Alias:ls) { Remove-Item Alias:ls -Force }
+function ls($args) { exa --color=always --icons --header --git $args }
+## bat
+If (Test-Path Alias:cat) { Remove-Item Alias:cat -Force }
+function cat($file) { bat --paging=never $file }
 Set-Alias less bat
-
-# lsd
-Set-Alias ls lsd
-
-# delta
+## delta
 If (Test-Path Alias:diff) { Remove-Item Alias:diff -Force }
 Set-Alias diff delta
-
-# ripgrep
+## rg
 Set-Alias grep rg
+## neovim
+Set-Alias vi nvim
+## bottom
+Set-Alias top btm
 
 # fzf
-$env:FZF_ALT_C_COMMAND = "fd -HL -t d -E '.git/'"
-$env:FZF_CTRL_T_COMMAND = "fd -HL -t f -E '.git/*'"
-$env:FZF_DEFAULT_COMMAND = "fd -HL -t f -E '.git/*'"
+$env:FZF_ALT_C_COMMAND = "fd --type d --hidden --follow --exclude .git"
+$env:FZF_DEFAULT_COMMAND = "fd --type f --hidden --follow --exclude .git"
 $env:FZF_DEFAULT_OPTS = "--height 50% --layout=reverse --no-unicode --info=inline"
+
+# PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 
 # ghq
 function gf {
   $path = $(ghq list | fzf)
   If ($LastExitCode -eq 0) { Set-Location "$(ghq root)\$path" }
 }
-
-# neovim
-Set-Alias vi nvim
-
-# uutils
-@"
-  arch, base32, base64, basename, cksum, comm, cp, cut, date, df, dircolors, dirname,
-  echo, env, expand, expr, factor, false, fmt, fold, hashsum, head, hostname, join, link, ln,
-  md5sum, mkdir, mktemp, more, mv, nl, nproc, od, paste, printenv, printf, ptx, pwd,
-  readlink, realpath, relpath, rm, rmdir, seq, sha1sum, sha224sum, sha256sum, sha3-224sum,
-  sha3-256sum, sha3-384sum, sha3-512sum, sha384sum, sha3sum, sha512sum, shake128sum,
-  shake256sum, shred, shuf, sleep, sort, split, sum, sync, tac, tail, tee, test, touch, tr,
-  true, truncate, tsort, unexpand, uniq, wc, whoami, yes
-"@ -split ',' |
-ForEach-Object { $_.trim() } |
-Where-Object { ! @('tee', 'sort', 'sleep').Contains($_) } |
-ForEach-Object {
-    $cmd = $_
-    If (Test-Path Alias:$cmd) { Remove-Item -Path Alias:$cmd }
-    $fn = '$input | uutils ' + $cmd + ' $args'
-    Invoke-Expression "function $cmd { $fn }"
-}
-
-# keybind
-Set-PSReadLineKeyHandler -key Tab -Function MenuComplete
 
 # starship
 Invoke-Expression (&starship init powershell)

@@ -13,14 +13,14 @@ my windows setting
 
 * scoopのインストール
 
-```powershell
+```pwsh
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 iwr -useb get.scoop.sh | iex
 ```
 
 * ツールのインストール
 
-```powershell
+```pwsh
 # must
 scoop install 7zip aria2 curl
 # git
@@ -30,57 +30,51 @@ scoop install fzf
 # legacy tools
 scoop install gawk less sed which
 # rust tools
-scoop install bat bat delta fd lsd ripgrep starship uutils-coreutils
+scoop install bat bat delta fd ripgrep starship uutils-coreutils
 # programing
 scoop install python
 # extras
 scoop bucket add extras
-scoop install vcredist2022 windows-terminal
 scoop install putty teraterm vcxsrv
 scoop install pdfarranger rufus sysinternals winmerge winscp wireshark
 ```
 
 * Update & Cleanup
 
-```powershell
+```pwsh
 scoop update
 scoop update *
 scoop cleanup *
 scoop cache rm *
 ```
 
+### rust
+
+* Visual Studio 2022 Build Tools（Build Tools for Visual Studio 2022）のインストール
+  * [ダウンロード先](https://visualstudio.microsoft.com/ja/downloads/)
+  * [C++によるデスクトップ開発]を選択して[インストール]を実行
+
+* rustupのインストール
+
+```pwsh
+scoop install rustup-msvc
+rustup default stable
+```
+
+### exa
+
+* exa（win-support）のインストール
+
+```pwsh
+cargo install --git https://github.com/skyline75489/exa --branch chesterliu/dev/win-support
+```
+
 ## ghq
 
 * ghq rootの設定
 
-```powershell
+```pwsh
 git config --global <ghq root>
-```
-
-### neovim
-
-* neovimのインストール
-
-```powershell
-scoop bucket add versions
-scoop install neovim
-```
-
-* モジュールのインストール
-
-```powershell
-pip install --user pynvim
-```
-
-* 環境変数の設定
-  * XDG_CACHE_HOME → %USERPROFILE%\.cache
-  * XDG_CONFIG_HOME → %USERPROFILE%\.config
-
-* 設定ファイルのコピー
-
-```powershell
-ghq get kazurri/dotfiles
-cp "$(ghq list -p dotfiles)\.config\nvim" $HOME\.config\ -Recurse -Force
 ```
 
 ### Powershell Core
@@ -90,32 +84,58 @@ cp "$(ghq list -p dotfiles)\.config\nvim" $HOME\.config\ -Recurse -Force
 
 * モジュールのインストール
 
-```powershell
+```pwsh
 Install-Module PSReadLine -Scope CurrentUser -SkipPublisherCheck -Force
 Install-Module PSFzf -Scope CurrentUser -SkipPublisherCheck -Force
 ```
 
 * プロファイルのコピー
 
-```powershell
+```pwsh
 ghq get kazurri/windows
 $path = $env:USERPROFILE + "\Documents\PowerShell"
 If (-not (Test-Path $path)) { mkdir $path}
 cp "$(ghq list -p windows)\Microsoft.PowerShell_profile.ps1" $PROFILE -Force
 ```
 
+### neovim
+
+* neovimのインストール
+
+```pwsh
+scoop bucket add versions
+scoop install neovim
+```
+
+* モジュールのインストール
+
+```pwsh
+pip install --user pynvim
+```
+
+* 環境変数の設定
+  * XDG_CACHE_HOME → %USERPROFILE%\.cache
+  * XDG_CONFIG_HOME → %USERPROFILE%\.config
+
+* 設定ファイルのコピー
+
+```pwsh
+ghq get kazurri/dotfiles
+cp "$(ghq list -p dotfiles)\.config\nvim" $HOME\.config\ -Recurse -Force
+```
+
 ### Windows Terminal
 
 * Windows Terminalのインストール
 
-```powershell
+```pwsh
 scoop bucket add extras
 scoop install vcredist2022 windows-terminal
 ```
 
 * プロファイルのコピー
 
-```powershell
+```pwsh
 ghq get kazurri/windows
 $path = $env:LOCALAPPDATA + "\Microsoft\Windows Terminal"
 If (-not (Test-Path $path)) { mkdir $path}
